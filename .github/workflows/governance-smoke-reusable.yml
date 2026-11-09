@@ -1,0 +1,10 @@
+name: Mission Control governance smoke
+on:
+  workflow_call:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo 'Mission Control reusable workflow reached the runner'
