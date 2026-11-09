@@ -7,5 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Confirm shared workflow execution
-        run: echo 'Mission Control governance reusable workflow executed'
+      - name: Validate governed files
+        shell: bash
+        run: |
+          test -f AGENTS.md || { echo 'AGENTS.md missing'; exit 1; }
+          test -f .github/workflows/governance.yml || { echo 'governance workflow missing'; exit 1; }
+          test -f .github/ISSUE_TEMPLATE/agent_task.yml || { echo 'agent task template missing'; exit 1; }
+          if git ls-files | grep -E '(^|/)(\.env|.*\.pem|id_rsa|id_ed25519)$'; then
+            echo 'credential-bearing tracked file detected'; exit 1;
+          fi
